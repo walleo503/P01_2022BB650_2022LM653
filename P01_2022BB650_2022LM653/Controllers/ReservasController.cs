@@ -22,7 +22,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("GetAll")]
         public IActionResult Get()
         {
-            var reservas = _contexto.Reservas.Include(r => r.Usuario).Include(r => r.EspacioParqueo).ToList();
+            var reservas = _contexto.Reseva.Include(r => r.Usuario).Include(r => r.EspacioParqueo).ToList();
             if (!reservas.Any()) return NotFound();
             return Ok(reservas);
         }
@@ -32,12 +32,12 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("Add")]
         public IActionResult CrearReserva([FromBody] Reserva reserva)
         {
-            var espacio = _contexto.EspaciosParqueo.Find(reserva.EspacioId);
+            var espacio = _contexto.Espacios_Parqueo.Find(reserva.EspacioId);
             if (espacio == null || espacio.Estado != "Disponible")
                 return BadRequest("El espacio no está disponible");
 
             espacio.Estado = "Ocupado";
-            _contexto.Reservas.Add(reserva);
+            _contexto.Reserva.Add(reserva);
             _contexto.SaveChanges();
             return Ok(reserva);
         }

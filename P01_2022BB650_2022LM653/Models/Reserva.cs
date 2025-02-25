@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.ComponentModel.DataAnnotations;
 
 namespace P01_2022BB650_2022LM653.Models
@@ -6,16 +6,16 @@ namespace P01_2022BB650_2022LM653.Models
     public class Reserva
     {
         [Key]
-        public int Id { get; set; }
+        public int ReservaId { get; set; }
 
         [Required]
         public int UsuarioId { get; set; }
 
         [Required]
-        public int EspacioId { get; set; }
+        public int Espacio_parqueoId { get; set; }
 
         [Required]
-        public DateTime FechaHoraInicio { get; set; }
+        public DateTime Fecha_Hora_Inicio { get; set; }
 
         [Required]
         public int CantidadHoras { get; set; }
@@ -26,10 +26,10 @@ namespace P01_2022BB650_2022LM653.Models
 
         // Relaciones
         [ForeignKey("UsuarioId")]
-        public Usuario Usuario { get; set; }
+        public Usuarios Usuario { get; set; }
 
         [ForeignKey("EspacioId")]
-        public EspacioParqueo EspacioParqueo { get; set; }
+        public Espacios_Parqueo EspacioParqueo { get; set; }
 
     }
 }

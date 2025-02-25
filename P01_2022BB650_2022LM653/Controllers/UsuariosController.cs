@@ -9,13 +9,13 @@ namespace P01_2022BB650_2022LM653.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DatosController : ControllerBase
+    public class UsuariosController : ControllerBase
     {
-        private readonly DatosContext _DatosContexto;
+        private readonly DatosContext _UsuarioContexto;
 
-        public DatosController(DatosContext DatosContexto)
+        public UsuariosController(DatosContext UsuarioContexto)
         {
-            _DatosContexto = DatosContexto;
+            _UsuarioContexto = UsuarioContexto;
         }
 
 
