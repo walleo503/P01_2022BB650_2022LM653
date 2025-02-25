@@ -82,7 +82,37 @@ namespace P01_2022BB650_2022LM653.Controllers
             return Ok(Sucursal);
         }
 
-        
+        ///Espacios disponibles 
+        [HttpGet]
+        [Route("Obtener Espacio Por sucursal/{sucursalId}/{fecha}")]
+        public IActionResult Obtener_Espacios_Por_Sucursal(int sucursalId, DateTime fecha)
+        {
+            var sucursal = _SucursalContexto.Sucursales.Find(sucursalId);
+            if (sucursal == null)
+            {
+                return NotFound("Esta sucursal no existe.");
+            }
+
+            var espacios = _SucursalContexto.Espacios_Parqueos
+                .Where(e => e.sucursalId == sucursalId)
+                .Select(e => new
+                {
+                    e.Espacio_parqueoId,
+                    e.Numero,
+                    e.Ubicacion,
+                    e.Costo_la_hora,
+                    e.Estado,
+                    Reservado = _SucursalContexto.Reserva.Any(r => r.Espacio_parqueoId == e.Espacio_parqueoId && r.Fecha_Hora_Inicio.Date == fecha.Date)
+                })
+                .ToList();
+
+            if (!espacios.Any())
+            {
+                return NotFound("No hay espacios disponibles.");
+            }
+
+            return Ok(espacios);
+        }
 
     }
 }
