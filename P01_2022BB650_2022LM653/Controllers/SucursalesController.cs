@@ -93,7 +93,7 @@ namespace P01_2022BB650_2022LM653.Controllers
                 return NotFound("Esta sucursal no existe.");
             }
 
-            var espacios = _SucursalContexto.Espacios_Parqueos
+            var espacios = _SucursalContexto.Espacios_Parqueo
                 .Where(e => e.sucursalId == sucursalId)
                 .Select(e => new
                 {
@@ -102,7 +102,7 @@ namespace P01_2022BB650_2022LM653.Controllers
                     e.Ubicacion,
                     e.Costo_la_hora,
                     e.Estado,
-                    Reservado = _SucursalContexto.Reserva.Any(r => r.Espacio_parqueoId == e.Espacio_parqueoId && r.Fecha_Hora_Inicio.Date == fecha.Date)
+                    Reservado = _SucursalContexto.Reservas.Any(r => r.Espacio_parqueoId == e.Espacio_parqueoId && r.Fecha_Hora_Inicio.Date == fecha.Date)
                 })
                 .ToList();
 
