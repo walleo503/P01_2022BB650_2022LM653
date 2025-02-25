@@ -97,14 +97,14 @@ namespace P01_2022BB650_2022LM653.Controllers
         //Validacion de usuarios.
         [HttpPost]
         [Route("Login")]
-        public IActionResult IniciarSesion([FromBody] Usuarios ValidarUsuario)
+        public IActionResult IniciarSesion([FromBody] Usuario ValidarUsuario)
         {
-            if (ValidarUsuario == null || string.IsNullOrEmpty(ValidarUsuario.Correo) || string.IsNullOrEmpty(V.Contraseña))
+            if (ValidarUsuario == null || string.IsNullOrEmpty(ValidarUsuario.Correo) || string.IsNullOrEmpty(ValidarUsuario.Contraseña))
             {
                 return BadRequest("(Obligatorios) Por favor ingresar Correo y contraseña .");
             }
 
-            var usuario = _UsuarioContexto.Usuarios.FirstOrDefault(u => u.Correo == ValidarUsuario.Correo);
+            var usuario = _UsuarioContexto.Usuario.FirstOrDefault(u => u.Correo == ValidarUsuario.Correo);
 
             if (usuario == null)
             {
