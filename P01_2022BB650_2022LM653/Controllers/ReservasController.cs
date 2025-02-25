@@ -22,7 +22,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("GetAll")]
         public IActionResult Get()
         {
-            var reservas = _contexto.Reserva.Include(r => r.Usuario).Include(r => r.EspacioParqueo).ToList();
+            var reservas = _contexto.Reservas.Include(r => r.Usuario).Include(r => r.EspacioParqueo).ToList();
             if (!reservas.Any()) return NotFound();
             return Ok(reservas);
         }
@@ -30,14 +30,14 @@ namespace P01_2022BB650_2022LM653.Controllers
         // Crear una reserva
         [HttpPost]
         [Route("Add")]
-        public IActionResult CrearReserva([FromBody] Reserva reserva)
+        public IActionResult CrearReserva([FromBody] Reservas reserva)
         {
-            var espacio = _contexto.Espacios_Parqueos.Find(reserva.Espacio_parqueoId);
+            var espacio = _contexto.Espacios_Parqueo.Find(reserva.Espacio_parqueoId);
             if (espacio == null || espacio.Estado != "Disponible")
                 return BadRequest("El espacio no está disponible");
 
             espacio.Estado = "Ocupado";
-            _contexto.Reserva.Add(reserva);
+            _contexto.Reservas.Add(reserva);
             _contexto.SaveChanges();
             return Ok(reserva);
         }
@@ -45,9 +45,9 @@ namespace P01_2022BB650_2022LM653.Controllers
         // Actualizar una reserva
         [HttpPut]
         [Route("Update/{id}")]
-        public IActionResult ActualizarReserva(int id, [FromBody] Reserva reservaModificada)
+        public IActionResult ActualizarReserva(int id, [FromBody] Reservas reservaModificada)
         {
-            var reserva = _contexto.Reserva.Find(id);
+            var reserva = _contexto.Reservas.Find(id);
             if (reserva == null) return NotFound();
 
             reserva.Fecha_Hora_Inicio = reservaModificada.Fecha_Hora_Inicio;
@@ -63,10 +63,10 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("Delete/{id}")]
         public IActionResult EliminarReserva(int id)
         {
-            var reserva = _contexto.Reserva.Find(id);
+            var reserva = _contexto.Reservas.Find(id);
             if (reserva == null) return NotFound();
 
-            _contexto.Reserva.Remove(reserva);
+            _contexto.Reservas.Remove(reserva);
             _contexto.SaveChanges();
             return Ok(reserva);
         }
@@ -76,14 +76,14 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("Cancel/{id}")]
         public IActionResult CancelarReserva(int id)
         {
-            var reserva = _contexto.Reserva.Find(id);
+            var reserva = _contexto.Reservas.Find(id);
             if (reserva == null) return NotFound();
 
             if (reserva.Fecha_Hora_Inicio <= DateTime.Now)
                 return BadRequest("No se puede cancelar una reserva en curso o pasada");
 
             reserva.Estado = "Cancelada";
-            var espacio = _contexto.Espacios_Parqueos.Find(reserva.Espacio_parqueoId);
+            var espacio = _contexto.Espacios_Parqueo.Find(reserva.Espacio_parqueoId);
             if (espacio != null) espacio.Estado = "Disponible";
 
             _contexto.SaveChanges();
@@ -95,7 +95,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("UserActiveReservations/{usuarioId}")]
         public IActionResult ObtenerReservasUsuario(int usuarioId)
         {
-            var reservas = _contexto.Reserva.Where(r => r.UsuarioId == usuarioId && r.Estado == "Activa").ToList();
+            var reservas = _contexto.Reservas.Where(r => r.UsuarioId == usuarioId && r.Estado == "Activa").ToList();
             if (!reservas.Any()) return NotFound();
             return Ok(reservas);
         }
@@ -105,7 +105,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("ReservationsByDay/{fecha}")]
         public IActionResult ReservasPorDia(DateTime fecha)
         {
-            var reservas = _contexto.Reserva
+            var reservas = _contexto.Reservas
                 .Where(r => r.Fecha_Hora_Inicio.Date == fecha.Date)
                 .GroupBy(r => new { r.EspacioParqueo, r.EspacioParqueo.sucursalId })
                 .Select(g => new { SucursalId = g.Key.sucursalId, EspacioId = g.Key.EspacioParqueo, TotalReservas = g.Count() })
@@ -120,7 +120,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("ReservationsByRange/{sucursalId}/{fechaInicio}/{fechaFin}")]
         public IActionResult ReservasEntreFechas(int sucursalId, DateTime fechaInicio, DateTime fechaFin)
         {
-            var reservas = _contexto.Reserva
+            var reservas = _contexto.Reservas
                 .Where(r => r.EspacioParqueo.sucursalId == sucursalId && r.Fecha_Hora_Inicio >= fechaInicio && r.Fecha_Hora_Inicio <= fechaFin)
                 .ToList();
 
