@@ -115,7 +115,7 @@ namespace P01_2022BB650_2022LM653.Controllers
             _Espacios_ParqueoContexto.Espacios_Parqueos.Add(espacio_de_parqueo);
              _Espacios_ParqueoContexto.SaveChanges();
 
-            return CreatedAtAction(nameof(Espacios_Parqueo), new { id = espacio_de_parqueo.Espacio_parqueoId }, espacio_de_parqueo);
+            return CreatedAtAction(nameof(RegistrarEspacio_de_Parqueo), new { id = espacio_de_parqueo.Espacio_parqueoId }, espacio_de_parqueo);
         }
 
     }

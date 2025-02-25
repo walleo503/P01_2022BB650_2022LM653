@@ -115,7 +115,7 @@ namespace P01_2022BB650_2022LM653.Controllers
             return Ok(reservas);
         }
 
-        // Obtener espacios reservados en un rango de fechas en una sucursal específica
+        // Obtener espacios reservados segun  la fechas en una sucursal específica
         [HttpGet]
         [Route("ReservationsByRange/{sucursalId}/{fechaInicio}/{fechaFin}")]
         public IActionResult ReservasEntreFechas(int sucursalId, DateTime fechaInicio, DateTime fechaFin)
