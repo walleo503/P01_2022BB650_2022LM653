@@ -23,7 +23,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("GetAll")]
         public IActionResult Usuarios()
         {
-            List<Usuarios> ListaUsuarios = (from e in _UsuarioContexto.Usuarios
+            List<Usuario> ListaUsuarios = (from e in _UsuarioContexto.Usuario
                                                     select e).ToList();
             if (ListaUsuarios.Count == 0)
             {
@@ -34,7 +34,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         //Agregar ususario 
         [HttpPost]
         [Route("Agregar Usuario")]
-        public IActionResult AgregarUsuario([FromBody] Usuarios nuevoUsuario)
+        public IActionResult AgregarUsuario([FromBody] Usuario nuevoUsuario)
         {
             if (nuevoUsuario == null)
             {
@@ -42,14 +42,14 @@ namespace P01_2022BB650_2022LM653.Controllers
             }
 
             // Validar usuario
-            var usuarioExistente = _UsuarioContexto.Usuarios.FirstOrDefault(u => u.Correo == nuevoUsuario.Correo);
+            var usuarioExistente = _UsuarioContexto.Usuario.FirstOrDefault(u => u.Correo == nuevoUsuario.Correo);
 
             if (usuarioExistente != null)
             {
                 return Conflict("El correo ya está registrado.");
             }
 
-            _UsuarioContexto.Usuarios.Add(nuevoUsuario);
+            _UsuarioContexto.Usuario.Add(nuevoUsuario);
             _UsuarioContexto.SaveChanges();
 
             return CreatedAtAction(nameof(AgregarUsuario), new { id = nuevoUsuario.UsuarioId }, nuevoUsuario);
@@ -59,9 +59,9 @@ namespace P01_2022BB650_2022LM653.Controllers
         //Actualizar usuario
         [HttpPost]
         [Route("Actualizar/{id}")]
-        public IActionResult ActualizaUsuario(int id, [FromBody] Usuarios Usuariomodificar)
+        public IActionResult ActualizaUsuario(int id, [FromBody] Usuario Usuariomodificar)
         {
-            var UsuarioActual = _UsuarioContexto.Usuarios.Find(id);
+            var UsuarioActual = _UsuarioContexto.Usuario.Find(id);
 
             if (UsuarioActual == null) { return NotFound(); }
 
@@ -81,7 +81,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("Eliminar/{id}")]
         public IActionResult EliminarUsuario(int id)
         {
-            var Sucursal = _UsuarioContexto.Usuarios.Find(id);
+            var Sucursal = _UsuarioContexto.Usuario.Find(id);
 
             if (Sucursal == null)
             {

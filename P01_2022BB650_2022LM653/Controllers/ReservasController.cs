@@ -22,7 +22,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("GetAll")]
         public IActionResult Get()
         {
-            var reservas = _contexto.Reservas.Include(r => r.Usuario).Include(r => r.EspacioParqueo).ToList();
+            var reservas = _contexto.Reservas.ToList(); 
             if (!reservas.Any()) return NotFound();
             return Ok(reservas);
         }

@@ -22,7 +22,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("GetAll")]
         public IActionResult Espacio_de_parqueo()
         {
-            List<Espacios_Parqueo> ListaParqueos = (from e in _Espacios_ParqueoContexto.Espacios_Parqueos
+            List<Espacios_Parqueo> ListaParqueos = (from e in _Espacios_ParqueoContexto.Espacios_Parqueo
                                                 select e).ToList();
             if (ListaParqueos.Count == 0)
             {
@@ -38,7 +38,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         {
             try
             {
-                _Espacios_ParqueoContexto.Espacios_Parqueos.Add(espacio_de_parqueo);
+                _Espacios_ParqueoContexto.Espacios_Parqueo.Add(espacio_de_parqueo);
                 _Espacios_ParqueoContexto.SaveChanges();
                 return Ok(espacio_de_parqueo);
             }
@@ -53,7 +53,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("Actualizar/{id}")]
         public IActionResult ActualizarEspacios_de_paqueo(int id, [FromBody] Espacios_Parqueo espacios_Parqueo_Modificar)
         {
-            var EspacioActual = _Espacios_ParqueoContexto.Espacios_Parqueos.Find(id);
+            var EspacioActual = _Espacios_ParqueoContexto.Espacios_Parqueo.Find(id);
 
             if (EspacioActual == null) { return NotFound(); }
 
@@ -73,7 +73,7 @@ namespace P01_2022BB650_2022LM653.Controllers
         [Route("Eliminar/{id}")]
         public IActionResult EliminarEspacio_de_parqueo(int id)
         {
-            var Espacio = _Espacios_ParqueoContexto.Espacios_Parqueos.Find(id);
+            var Espacio = _Espacios_ParqueoContexto.Espacios_Parqueo.Find(id);
 
             if (Espacio == null)
             {
@@ -112,7 +112,7 @@ namespace P01_2022BB650_2022LM653.Controllers
             }
 
             // Agregar el nuevo espacio
-            _Espacios_ParqueoContexto.Espacios_Parqueos.Add(espacio_de_parqueo);
+            _Espacios_ParqueoContexto.Espacios_Parqueo.Add(espacio_de_parqueo);
              _Espacios_ParqueoContexto.SaveChanges();
 
             return CreatedAtAction(nameof(RegistrarEspacio_de_Parqueo), new { id = espacio_de_parqueo.Espacio_parqueoId }, espacio_de_parqueo);
