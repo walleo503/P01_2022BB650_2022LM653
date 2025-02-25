@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -31,6 +32,7 @@ namespace P01_2022BB650_2022LM653.Controllers
             }
             return Ok(ListaUsuarios);
         }
+
         //Agregar ususario 
         [HttpPost]
         [Route("Agregar Usuario")]
@@ -91,5 +93,33 @@ namespace P01_2022BB650_2022LM653.Controllers
             _UsuarioContexto.SaveChanges();
             return Ok(Sucursal);
         }
+
+        //Validacion de usuarios.
+        [HttpPost]
+        [Route("Login")]
+        public IActionResult IniciarSesion([FromBody] Usuarios ValidarUsuario)
+        {
+            if (ValidarUsuario == null || string.IsNullOrEmpty(ValidarUsuario.Correo) || string.IsNullOrEmpty(V.Contraseña))
+            {
+                return BadRequest("(Obligatorios) Por favor ingresar Correo y contraseña .");
+            }
+
+            var usuario = _UsuarioContexto.Usuarios.FirstOrDefault(u => u.Correo == ValidarUsuario.Correo);
+
+            if (usuario == null)
+            {
+                return Unauthorized("El correo o la contraseña son incorrectos.");
+            }
+
+            // Comparar la contraseña en texto plano (esto no es seguro, se recomienda usar hashing)
+            if (usuario.Contraseña !=ValidarUsuario.Contraseña)
+            {
+                return Unauthorized("Correo o contraseña incorrectos.");
+            }
+
+            return Ok(new { mensaje = "Inicio de sesión exitoso", usuario });
+        }
+
+
     }
 }
