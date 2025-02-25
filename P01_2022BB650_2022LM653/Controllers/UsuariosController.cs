@@ -94,23 +94,24 @@ namespace P01_2022BB650_2022LM653.Controllers
             return Ok(Sucursal);
         }
 
-        /// <summary>
-        /// Validasion de Usuario
+        
+        /// <summary> 
+        /// Validación de Usuario
         /// </summary>
-        /// <param name="ValidarUsuario"></param>
+        /// <param name="credenciales"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("Login")]
-        public IActionResult IniciarSesion([FromBody] Usuario ValidarUsuario)
+        public IActionResult IniciarSesion([FromBody] CredencialesUsuario credenciales)
         {
-            if (ValidarUsuario == null || string.IsNullOrEmpty(ValidarUsuario.Nombre) || string.IsNullOrEmpty(ValidarUsuario.Contraseña))
+            if (credenciales == null || string.IsNullOrEmpty(credenciales.Nombre) || string.IsNullOrEmpty(credenciales.Contraseña))
             {
                 return BadRequest("Usuario y contraseña son obligatorios.");
             }
 
-            var usuario = _UsuarioContexto.Usuario.FirstOrDefault(u => u.Nombre == ValidarUsuario.Nombre);
+            var usuario = _UsuarioContexto.Usuario.FirstOrDefault(u => u.Nombre == credenciales.Nombre);
 
-            if (usuario == null || usuario.Contraseña != ValidarUsuario.Contraseña)
+            if (usuario == null || usuario.Contraseña != credenciales.Contraseña)
             {
                 return Unauthorized("Usuario o contraseña incorrectos.");
             }
@@ -118,7 +119,14 @@ namespace P01_2022BB650_2022LM653.Controllers
             return Ok(new { mensaje = "Inicio de sesión exitoso", usuario });
         }
 
-
+       
+        public class CredencialesUsuario
+        {
+            public string Nombre { get; set; }
+            public string Contraseña { get; set; }
+        }
 
     }
+
+    
 }
