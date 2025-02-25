@@ -84,5 +84,39 @@ namespace P01_2022BB650_2022LM653.Controllers
             return Ok(Espacio);
         }
 
+
+        //Registrar nuevos espacios.
+        [HttpPost]
+        [Route("Registrar")]
+        public IActionResult RegistrarEspacio_de_Parqueo([FromBody] Espacios_Parqueo espacio_de_parqueo)
+        {
+            if ( espacio_de_parqueo== null)
+            {
+                return BadRequest("Datos inválidos");
+            }
+
+            // Validar si la sucursal existe
+            var sucursal = _Espacios_ParqueoContexto.Sucursales.Find(espacio_de_parqueo.sucursalId);
+            if (sucursal == null)
+            {
+                return NotFound("Esta sucursal no existe, ingrese otra por favor.");
+            }
+
+            // Validar si ya existe un espacio con el mismo número en la sucursal
+            var existeEspacio = _Espacios_ParqueoContexto.Sucursales
+                .Any(e => e.SucursalId== espacio_de_parqueo.sucursalId && e.SucursalId == espacio_de_parqueo.Numero);
+
+            if (existeEspacio)
+            {
+                return Conflict("Ya existe un espacio con ese número en la sucursal.");
+            }
+
+            // Agregar el nuevo espacio
+            _Espacios_ParqueoContexto.Espacios_Parqueos.Add(espacio_de_parqueo);
+             _Espacios_ParqueoContexto.SaveChanges();
+
+            return CreatedAtAction(nameof(Espacios_Parqueo), new { id = espacio_de_parqueo.Espacio_parqueoId }, espacio_de_parqueo);
+        }
+
     }
 }
