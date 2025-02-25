@@ -71,9 +71,9 @@ namespace P01_2022BB650_2022LM653.Controllers
             return Ok(reserva);
         }
 
-        // Cancelar una reserva antes de su uso
+        //Cancelar una reserva antes de su uso
         [HttpPut]
-        [Route("Cancel/{id}")]
+        [Route("Cancelelar/{id}")]
         public IActionResult CancelarReserva(int id)
         {
             var reserva = _contexto.Reservas.Find(id);
@@ -90,9 +90,9 @@ namespace P01_2022BB650_2022LM653.Controllers
             return Ok(reserva);
         }
 
-        // Obtener reservas activas de un usuario
+        //reservas activas de un usuario
         [HttpGet]
-        [Route("UserActiveReservations/{usuarioId}")]
+        [Route("ReservacionesActivasUsuario/{usuarioId}")]
         public IActionResult ObtenerReservasUsuario(int usuarioId)
         {
             var reservas = _contexto.Reservas.Where(r => r.UsuarioId == usuarioId && r.Estado == "Activa").ToList();
@@ -100,9 +100,9 @@ namespace P01_2022BB650_2022LM653.Controllers
             return Ok(reservas);
         }
 
-        // Obtener espacios reservados por día en todas las sucursales
+        //espacios reservados por diia en todas las sucursales
         [HttpGet]
-        [Route("ReservationsByDay/{fecha}")]
+        [Route("ReservacionesPorDia/{fecha}")]
         public IActionResult ReservasPorDia(DateTime fecha)
         {
             var reservas = _contexto.Reservas
@@ -117,7 +117,7 @@ namespace P01_2022BB650_2022LM653.Controllers
 
         // Obtener espacios reservados segun  la fechas en una sucursal específica
         [HttpGet]
-        [Route("ReservationsByRange/{sucursalId}/{fechaInicio}/{fechaFin}")]
+        [Route("ReservacionesPorFecha/{sucursalId}/{fechaInicio}/{fechaFin}")]
         public IActionResult ReservasEntreFechas(int sucursalId, DateTime fechaInicio, DateTime fechaFin)
         {
             var reservas = _contexto.Reservas
