@@ -11,9 +11,9 @@ namespace P01_2022BB650_2022LM653.Models
         { 
         
         }
-        public DbSet<Usuarios> Usuarios { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Sucursales> Sucursales { get; set; }
-        public DbSet<Reserva> Reserva {  get; set; }
-        public DbSet<Espacios_Parqueo> Espacios_Parqueos { get; set; }
+        public DbSet<Reservas> Reservas {  get; set; }
+        public DbSet<Espacios_Parqueo> Espacios_Parqueo { get; set; }
     }
 }
