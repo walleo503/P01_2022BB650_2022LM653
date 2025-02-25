@@ -94,31 +94,30 @@ namespace P01_2022BB650_2022LM653.Controllers
             return Ok(Sucursal);
         }
 
-        //Validacion de usuarios.
+        /// <summary>
+        /// Validasion de Usuario
+        /// </summary>
+        /// <param name="ValidarUsuario"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Login")]
         public IActionResult IniciarSesion([FromBody] Usuario ValidarUsuario)
         {
-            if (ValidarUsuario == null || string.IsNullOrEmpty(ValidarUsuario.Correo) || string.IsNullOrEmpty(ValidarUsuario.Contraseña))
+            if (ValidarUsuario == null || string.IsNullOrEmpty(ValidarUsuario.Nombre) || string.IsNullOrEmpty(ValidarUsuario.Contraseña))
             {
-                return BadRequest("(Obligatorios) Por favor ingresar Correo y contraseña .");
+                return BadRequest("Usuario y contraseña son obligatorios.");
             }
 
-            var usuario = _UsuarioContexto.Usuario.FirstOrDefault(u => u.Correo == ValidarUsuario.Correo);
+            var usuario = _UsuarioContexto.Usuario.FirstOrDefault(u => u.Nombre == ValidarUsuario.Nombre);
 
-            if (usuario == null)
+            if (usuario == null || usuario.Contraseña != ValidarUsuario.Contraseña)
             {
-                return Unauthorized("El correo o la contraseña son incorrectos.");
-            }
-
-            // Comparar la contraseña en texto plano (esto no es seguro, se recomienda usar hashing)
-            if (usuario.Contraseña !=ValidarUsuario.Contraseña)
-            {
-                return Unauthorized("Correo o contraseña incorrectos.");
+                return Unauthorized("Usuario o contraseña incorrectos.");
             }
 
             return Ok(new { mensaje = "Inicio de sesión exitoso", usuario });
         }
+
 
 
     }

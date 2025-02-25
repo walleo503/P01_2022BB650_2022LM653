@@ -128,6 +128,5 @@ namespace P01_2022BB650_2022LM653.Controllers
             return Ok(reservas);
         }
 
-
     }
 }
