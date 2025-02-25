@@ -17,5 +17,33 @@ namespace P01_2022BB650_2022LM653.Controllers
         }
 
 
+        //Ver todas las sucusales.
+        [HttpGet]
+        [Route("GetAll")]
+        public IActionResult getSucursales() {
+            List <Sucursales> listaSucursales =(from e in _SucursalContexto.Sucursales
+                                                select e).ToList();
+            if (listaSucursales.Count == 0) {
+              return NotFound();
+            }
+           return Ok (listaSucursales);
+        }
+
+        //Agregar nueva sucursal 
+        [HttpPost]
+        [Route("add")]
+        public IActionResult GuardarSucursal([FromBody] Sucursales sucursales)
+        {
+            try
+            {
+                _SucursalContexto.Sucursales.Add(sucursales);
+                _SucursalContexto.SaveChanges();
+                return Ok(sucursales);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
